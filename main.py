@@ -41,3 +41,22 @@ c1 = Circle(5)
 
 print(c1.get_area())
 # Завдання 4
+
+
+class BankAccount:
+    def __init__(self, owner, balance):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print("Зняття успішне")
+        else:
+            print("Недостатньо коштів")
+
+    def info(self):
+        print(f"На рахунку {self.owner}: {self.balance}грн")
