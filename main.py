@@ -60,3 +60,37 @@ class BankAccount:
 
     def info(self):
         print(f"На рахунку {self.owner}: {self.balance}грн")
+
+
+acc = BankAccount("Іван", 1000)
+
+acc.deposit(500)
+acc.withdraw(200)
+
+acc.info()
+
+# Завдання 5
+
+
+class Car:
+    def __init__(self, brand, year, is_ready=False):
+        self.brand = brand
+        self.year = year
+        self.is_ready = is_ready
+
+    def start_engine(self):
+        self.is_ready = True
+
+    def info(self):
+        print(
+            f"Марка: {self.brand} Рік випуску: {self.year}"
+            f"Чи готовий до поїздки: {'Так' if self.is_ready else 'Ні'}"
+        )
+
+
+car = Car("BMW", 2020)
+
+car.info()
+
+car.start_engine()
+car.info()
