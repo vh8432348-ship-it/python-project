@@ -1,63 +1,48 @@
 # Завдання 1
+"""
 
-users_balance = {"Влад": 123}
+Є словник з курсами валют, де ключ – назва валюти,
+значення – курс до гривні. Користувач вводить назву валюти,
+суму та назву нової валюти, в яку треба перевести суму
+"""
 
+rates = {"гривня": 1, "долар": 40, "євро": 43, "злотий": 10}
 
-def ask_value(balance, message):
-    while True:
-        value = int(input(message))
-        if value < 1:
-            print("Сума повинна будти більшою за 0")
+from_currency = input("Введіть валюту: ").lower()
+amount = float(input("Введіть суму: "))
+to_currency = input("У яку валюту перевести: ").lower()
 
-        elif value > balance:
-            print("Недостатньо коштів на вашому рахунку")
-        else:
-            return value
+amount_uah = amount * rates[from_currency]
 
+result = amount_uah / rates[to_currency]
 
-def add_balance(balance):
-    user_name = input("Введіть ім'я користувача")
+print("Результат:", result)
 
-    if user_name in users_balance:
-        value = ask_value(balance, "Введіть суму для поповнення: ")
-        balance -= value
-        users_balance[user_name] += value
+# Завдання 2
 
-    else:
-        print("Доданий новий користувач")
-        value = ask_value(balance)
-        balance -= value
-        users_balance[user_name] = value
-
-    print(f"Рахунок користувача {user_name} поповненно на {value} ваш балан {balance}")
-    return balance
+"""
+Напишіть функцію, яка отримує 2 множини з іменами
+працівників, які працюють в офісі та віддалено. Виведіть на
+екран:
+ Імена усіх працівників
+ Імена працівників, які працюють і в офісі, і віддалено
+ Відсоток працівників, які працюють і в офісі, і
+віддалено
+"""
 
 
-def reduce_balance(balance):
-    user_name = input("Введіть ім'я користувача")
-    if user_name not in users_balance:
-        print("Такого користувача не існує")
-    else:
-        value = ask_value(balance, "Введіть суму для зняття: ")
-        balance += value
-        users_balance[user_name] -= value
+def workers_info(office, remote):
+    all_workers = office | remote
+    print("Усі працівники:", all_workers)
 
-    print(f"Ви зняли з рахунку {user_name} суму {value} ваш баланс {balance}")
-    return balance
+    both = office & remote
+    print("Працюють і в офісі і віддалено:", both)
+
+    percent = len(both) / len(all_workers) * 100
+    print("Відсоток:", round(percent, 2), "%")
 
 
-def main():
-    balance = int(input("Введіть ваш баланс"))
-    operation = input("Виберіть операцію: 1 Поповнити баланс. 2 Зняти гроші")
+office = {"Іван", "Оля", "Петро", "Марія"}
+remote = {"Оля", "Марія", "Сергій"}
 
-    if operation == "1":
-        balance = add_balance(balance)
-
-    elif operation == "2":
-        balance = reduce_balance(balance)
-        print("Дякую що скористалися нашим банком)")
-    return balance
-
-
-result = main()
-print(result, users_balance)
+workers_info(office, remote)
