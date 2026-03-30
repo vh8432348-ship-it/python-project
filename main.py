@@ -26,3 +26,26 @@ print(
     f"Кількість символів: {count_sym} Кількість рядків: {count_of_lines} "
     f"Кількість цифр: {numbers_count} Кількість голосних літер: {vowel_letter}"
 )
+# Завдання 2
+"""
+    Користувач вводить слово та назву файлу. Виведіть
+кількість цього слова у файлі.
+"""
+name_of_file = input("Введіть назву файлу: ")
+target = input("Ввеідть слово яке потрібной знайти: ")
+
+try:
+    with open(name_of_file, "r", encoding="utf-8") as file:
+        content = file.read()
+
+except FileNotFoundError:
+    print("Файл не знайдено, використовується test.txt")
+    with open("test.txt", "r", encoding="utf-8") as file:
+        content = file.read()
+        name_of_file = "test.txt"
+
+words = content.split()
+result = words.count(target)
+
+print(f"Кількість цього слова {target} у файлі: {name_of_file} = {result}")
+# Завдання 3
