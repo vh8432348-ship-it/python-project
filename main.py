@@ -1,48 +1,45 @@
 # Завдання 1
-"""
 
-Є словник з курсами валют, де ключ – назва валюти,
-значення – курс до гривні. Користувач вводить назву валюти,
-суму та назву нової валюти, в яку треба перевести суму
-"""
 
-rates = {"гривня": 1, "долар": 40, "євро": 43, "злотий": 10}
+def ask_password():
+    password = input("Введіть пароль: ")
 
-from_currency = input("Введіть валюту: ").lower()
-amount = float(input("Введіть суму: "))
-to_currency = input("У яку валюту перевести: ").lower()
+    if len(password) < 8:
+        raise ValueError("Пароль має містити не менше 8 символів")
 
-amount_uah = amount * rates[from_currency]
+    if len(set(password)) == 1:
+        raise ValueError("Пароль не може складатися з однакових символів")
 
-result = amount_uah / rates[to_currency]
+    return password
 
-print("Результат:", result)
+
+try:
+    user_password = ask_password()
+    print("Пароль прийнято:", user_password)
+except ValueError as e:
+    print("Помилка:", e)
+
 
 # Завдання 2
-
-"""
-Напишіть функцію, яка отримує 2 множини з іменами
-працівників, які працюють в офісі та віддалено. Виведіть на
-екран:
- Імена усіх працівників
- Імена працівників, які працюють і в офісі, і віддалено
- Відсоток працівників, які працюють і в офісі, і
-віддалено
-"""
+users_info = {"user1": "password123", "admin": "qwerty456", "guest": "guest000"}
 
 
-def workers_info(office, remote):
-    all_workers = office | remote
-    print("Усі працівники:", all_workers)
+def ask_login_password():
+    user_login = input("Введіть логін")
 
-    both = office & remote
-    print("Працюють і в офісі і віддалено:", both)
+    if user_login not in users_info:
+        raise ValueError("Такого логіну не існує")
 
-    percent = len(both) / len(all_workers) * 100
-    print("Відсоток:", round(percent, 2), "%")
+    user_password = input("Введіть пароль")
+
+    if user_password != users_info[user_login]:
+        raise ValueError("Такого паролю не існує")
+
+    return user_password, user_login
 
 
-office = {"Іван", "Оля", "Петро", "Марія"}
-remote = {"Оля", "Марія", "Сергій"}
-
-workers_info(office, remote)
+try:
+    result = ask_login_password()
+    print("Логін та пароль прийнято:", result)
+except ValueError as e:
+    print("Помилка:", e)
