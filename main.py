@@ -49,3 +49,14 @@ result = words.count(target)
 
 print(f"Кількість цього слова {target} у файлі: {name_of_file} = {result}")
 # Завдання 3
+"""
+    Є текстовий файл. Видаліть з нього останній рядок
+"""
+with open("test.txt", "r", encoding="utf-8") as file:
+    lines = file.readlines()
+
+
+lines = lines[:-1]
+
+with open("test.txt", "w", encoding="utf-8") as file:
+    file.writelines(lines)
