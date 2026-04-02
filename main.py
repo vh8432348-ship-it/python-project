@@ -75,3 +75,40 @@ for _ in range(3):
 
 for fig in figures:
     fig.display_info()
+# Завдання 2
+
+
+class Employee:
+    def __init__(self, name: str, base_salary: float):
+        self._name = name
+        self._base_salary = base_salary
+
+    def get_salary(self) -> float:
+        raise NotImplementedError
+
+
+class Manager(Employee):
+    def __init__(self, name: str, base_salary: float):
+        super().__init__(name, base_salary)
+
+    def get_salary(self) -> float:
+        return self._base_salary
+
+
+class Developer(Employee):
+    def __init__(self, name: str, base_salary: float, work_experience: int):
+        super().__init__(name, base_salary)
+        self._work_experience = work_experience
+
+    def get_salary(self) -> float:
+        if self._work_experience > 4:
+            return self._base_salary * 1.2
+        return self._base_salary
+
+
+class Intern(Employee):
+    def __init__(self, name: str, base_salary: float):
+        super().__init__(name, base_salary)
+
+    def get_salary(self) -> float:
+        return self._base_salary * 0.5
