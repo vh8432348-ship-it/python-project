@@ -75,6 +75,7 @@ for _ in range(3):
 
 for fig in figures:
     fig.display_info()
+
 # Завдання 2
 
 
@@ -112,3 +113,35 @@ class Intern(Employee):
 
     def get_salary(self) -> float:
         return self._base_salary * 0.5
+
+
+def create_worker():
+    worker_type = input("Введіть тип працівника (manager/developer/intern): ").lower()
+
+    name = input("Введіть ім'я: ")
+    base_salary = float(input("Введіть базову зарплату: "))
+
+    if worker_type == "manager":
+        return Manager(name, base_salary)
+
+    elif worker_type == "developer":
+        work_experience = int(input("Введіть стаж роботи (років): "))
+        return Developer(name, base_salary, work_experience)
+
+    elif worker_type == "intern":
+        return Intern(name, base_salary)
+
+    else:
+        print("Невідомий тип працівника")
+        return None
+
+
+workers = []
+
+for _ in range(3):
+    worker = create_worker()
+    if worker:
+        workers.append(worker)
+
+for worker in workers:
+    print(f"{worker._name}: {worker.get_salary()}")
