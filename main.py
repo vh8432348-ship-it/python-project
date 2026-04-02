@@ -145,3 +145,75 @@ for _ in range(3):
 
 for worker in workers:
     print(f"{worker._name}: {worker.get_salary()}")
+
+
+# Завдання 3
+class Vehicle:
+    def __init__(self, speed: float):
+        self.check_speed(speed)
+        self._speed = speed
+
+    def check_speed(self, speed: float):
+        raise NotImplementedError
+
+    def move(self):
+        raise NotImplementedError
+
+
+class Car(Vehicle):
+    def check_speed(self, speed: float):
+        if not (20 <= speed <= 200):
+            raise ValueError("Швидкість для Car має бути від 20 до 200")
+
+    def move(self):
+        print(f"Car їде по шосе зі швидкістю {self._speed}")
+
+
+class Bicycle(Vehicle):
+    def check_speed(self, speed: float):
+        if not (10 <= speed <= 30):
+            raise ValueError("Швидкість для Bicycle має бути від 10 до 30")
+
+    def move(self):
+        print(f"Bicycle їде по дорозі зі швидкістю {self._speed}")
+
+
+class Boat(Vehicle):
+    def check_speed(self, speed: float):
+        if not (0 <= speed <= 50):
+            raise ValueError("Швидкість для Boat має бути від 0 до 50")
+
+    def move(self):
+        print(f"Boat пливе по воді зі швидкістю {self._speed}")
+
+
+def create_vehicle():
+    vehicle_type = input("Введіть тип транспорту (car/bicycle/boat): ").lower()
+    speed = float(input("Введіть швидкість: "))
+
+    if vehicle_type == "car":
+        return Car(speed)
+
+    elif vehicle_type == "bicycle":
+        return Bicycle(speed)
+
+    elif vehicle_type == "boat":
+        return Boat(speed)
+
+    else:
+        print("Невідомий тип транспорту")
+        return None
+
+
+vehicles = []
+
+for _ in range(3):
+    try:
+        vehicle = create_vehicle()
+        if vehicle:
+            vehicles.append(vehicle)
+    except ValueError as e:
+        print(e)
+
+for v in vehicles:
+    v.move()
