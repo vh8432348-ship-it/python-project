@@ -1,45 +1,39 @@
-from typing import List
+from datetime import datetime
+
 
 # Завдання 1
 
 
-class Cart:
-    def __init__(self, client: str):
-        self._client = client
-        self._items: List[str] = []
+class Message:
+    def __init__(self, user, text, time_str):
+        self.user = user
+        self.text = text
+        self.time = datetime.strptime(time_str, "%H:%M")
 
-    def add_item(self, item: str) -> None:
-        self._items.append(item)
+    def __str__(self):
+        return f"{self.user}: {self.text} ({self.time.strftime('%H:%M')})"
 
-    def remove_item(self, item: str) -> None:
-        if item in self._items:
-            self._items.remove(item)
-        else:
-            print("Товар не знайдено у кошику")
+    def __len__(self):
+        return len(self.text)
 
-    def display_info(self) -> None:
-        print(f"Клієнт: {self._client}")
-        print("Товари в кошику:")
-        for item in self._items:
-            print(f"- {item}")
+    def __gt__(self, other):
+        return self.time > other.time
 
+
+messages = [
+    Message("Ivan", "Привіт", "10:23"),
+    Message("Oleg", "Як справи?", "09:15"),
+    Message("Anna", "Все добре!", "11:05"),
+]
+
+print("До сортування:")
+for mess in messages:
+    print(mess)
+
+messages.sort()
+
+print("Після сортування:")
+for mess in messages:
+    print(mess)
 
 # Завдання 2
-
-
-class Phone:
-    def __init__(self, number: str, battery_level: float):
-        self._number = number
-        self._battery_level = battery_level
-
-    def decrease_battery(self, percent: float) -> None:
-        self._battery_level -= percent
-        if self._battery_level < 0:
-            self._battery_level = 0
-
-        if self._battery_level < 20:
-            print("Низький рівень заряду!")
-
-    def display_info(self) -> None:
-        print(f"Номер: {self._number}")
-        print(f"Заряд батареї: {self._battery_level}%")
