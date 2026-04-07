@@ -93,3 +93,52 @@ playlist.add_song(song3)
 
 for song in playlist:
     print(song)
+
+
+# Завдання 3
+
+
+class Cart:
+    def __init__(self):
+        self.items = []
+        self.total = 0
+
+    def __str__(self):
+        return f"Товари: {', '.join(self.items)} | Сума: {self.total}"
+
+    def __len__(self):
+        return len(self.items)
+
+    def __add__(self, other):
+        if not isinstance(other, Cart):
+            raise TypeError("Можна об'єднувати тільки Cart")
+
+        new_cart = Cart()
+        new_cart.items = self.items + other.items
+        new_cart.total = self.total + other.total
+        return new_cart
+
+    def add_item(self, item, price):
+        self.items.append(item)
+        self.total += price
+
+
+cart1 = Cart()
+cart2 = Cart()
+
+cart1.add_item("Хліб", 20)
+cart1.add_item("Молоко", 30)
+
+cart2.add_item("Сир", 50)
+cart2.add_item("Яблука", 40)
+
+print(len(cart1))
+print(len(cart2))
+
+print(cart1)
+print(cart2)
+
+cart3 = cart1 + cart2
+
+print(len(cart3))
+print(cart3)
