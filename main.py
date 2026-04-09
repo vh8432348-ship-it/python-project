@@ -65,3 +65,22 @@ class Character:
 
 
 # Завдання 2
+
+
+class Paladin(Character):
+    def attack(self):
+        if self._mana > 4:
+            self._mana -= 5
+            return self._strength * 4
+
+        else:
+            return self._strength
+
+    def shield(self):
+        self._defense += 4 + self._level
+
+    def unshield(self):
+        self._defense -= 4 + self._level
+
+    def heal_ally(self, ally):
+        return 5 + 2 * self._level + 0.5 * self._mana
