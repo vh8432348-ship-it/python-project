@@ -83,4 +83,5 @@ class Paladin(Character):
         self._defense -= 4 + self._level
 
     def heal_ally(self, ally):
-        return 5 + 2 * self._level + 0.5 * self._mana
+        heal_hp = 5 + 2 * self._level + 0.5 * self._mana
+        ally.heal(heal_hp)
