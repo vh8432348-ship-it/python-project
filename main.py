@@ -85,3 +85,25 @@ class Paladin(Character):
     def heal_ally(self, ally):
         heal_hp = 5 + 2 * self._level + 0.5 * self._mana
         ally.heal(heal_hp)
+
+
+class Mage(Character):
+    def attack(self):
+        if self._mana > 2:
+            self._mana -= 2
+            return 3 * self._intelligence + 4
+
+        else:
+            return 0
+
+    def fireball(self):
+        if self._mana > 5:
+            self._mana -= 5
+            return 2 * self._intelligence + 3
+
+        else:
+            return 0
+
+    def heal_ally(self, ally):
+        heal_hp = 3 + self._level + 3 * self._intelligence
+        ally.heal(heal_hp)
