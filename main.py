@@ -1,109 +1,107 @@
 # Завдання 1
 
 
-class Character:
-    def __init__(
-        self,
-        name,
-        max_hp,
-        intelligence,
-        strength,
-        dexterity,
-        mana,
-        defense,
-        level=1,
-    ):
+class Project:
+    def __init__(self, name, budget):
         self._name = name
-        self._max_hp = max_hp
-        self._hp = max_hp
-        self._level = level
-        self._intelligence = intelligence
-        self._strength = strength
-        self._dexterity = dexterity
-        self._mana = mana
-        self._defense = defense
+        self._budget = budget
+        self._total_cost = 0
+        self._completed = False
+        self._time = 0
+        self._tasks = []
 
-    def attack(self):
-        raise NotImplementedError("Метод attack потрібно перевизначити")
+    def show_info(self):
+        print(f"Назва: {self._name}")
+        print(f"Час виконання: {self._time} місяців")
+        print("Задачі:", self._tasks)
 
-    def take_damage(self, damage):
-        real_damage = damage - self._defense
-        if real_damage < 0:
-            real_damage = 0
+    def add_task(self, task_name):
+        self._tasks.append(task_name)
 
-        self._hp -= real_damage
+    def split_task(self, task_name, subtasks):
+        if task_name in self._tasks:
+            self._tasks.remove(task_name)
+            self._tasks.extend(subtasks)
+        else:
+            print("Такої задачі немає")
 
-        if self._hp < 0:
-            self._hp = 0
+    def complete_task(self, task_name, time_spent, cost):
+        if task_name in self._tasks:
+            self._tasks.remove(task_name)
+            self._time += time_spent
+            self._total_cost += cost
 
-    def level_up(self):
-        if self._level < 20:
-            self._level += 1
+            if self._total_cost > self._budget:
+                print("Перевищено кошторис!")
 
-    def increase_stat(self, stat):
-        if stat == "strength":
-            self._strength += 1
-        elif stat == "intelligence":
-            self._intelligence += 1
-        elif stat == "dexterity":
-            self._dexterity += 1
-        elif stat == "mana":
-            self._mana += 1
-        elif stat == "defense":
-            self._defense += 1
+            if not self._tasks:
+                self._completed = True
+        else:
+            print("Такої задачі немає")
 
-    def rest(self):
-        self._hp = self._max_hp
-
-    def heal(self, heal_hp):
-        self._hp += heal_hp
-        if self._hp > self._max_hp:
-            self._hp = self._max_hp
-
-    def get_info(self):
-        return f"{self._name} | HP: {self._hp}/{self._max_hp} | Level: {self._level}"
+    def add_budget(self, amount):
+        self._budget += amount
 
 
 # Завдання 2
+class Phone:
+    def __init__(self, max_memory):
+        self._max_memory = max_memory
+        self._used_memory = 0
+        self._is_on = False
+        self._apps = {}  # {name: size}
 
+    def show_memory_info(self):
+        print(f"Максимальна пам'ять: {self._max_memory}")
+        print(f"Зайнята пам'ять: {self._used_memory}")
+        print(f"Вільна пам'ять: {self._max_memory - self._used_memory}")
+        print(f"Додатки: {self._apps}")
 
-class Paladin(Character):
-    def attack(self):
-        if self._mana > 4:
-            self._mana -= 5
-            return self._strength * 4
+    def turn_on(self):
+        self._is_on = True
+        print("Телефон увімкнено")
 
+    def turn_off(self):
+        self._is_on = False
+        print("Телефон вимкнено")
+
+    def install_app(self, name, size):
+        if self._used_memory + size <= self._max_memory:
+            self._apps[name] = size
+            self._used_memory += size
+            print(f"Встановлено {name}")
         else:
-            return self._strength
+            print("Недостатньо пам’яті")
 
-    def shield(self):
-        self._defense += 4 + self._level
-
-    def unshield(self):
-        self._defense -= 4 + self._level
-
-    def heal_ally(self, ally):
-        heal_hp = 5 + 2 * self._level + 0.5 * self._mana
-        ally.heal(heal_hp)
-
-
-class Mage(Character):
-    def attack(self):
-        if self._mana > 2:
-            self._mana -= 2
-            return 3 * self._intelligence + 4
-
+    def delete_app(self, name):
+        if name in self._apps:
+            self._used_memory -= self._apps[name]
+            del self._apps[name]
+            print(f"Видалено {name}")
         else:
-            return 0
+            print("Такого додатку немає")
 
-    def fireball(self):
-        if self._mana > 5:
-            self._mana -= 5
-            return 2 * self._intelligence + 3
+    def update_app(self, name, new_size):
+        if name in self._apps:
+            old_size = self._apps[name]
+            difference = new_size - old_size
 
+            if self._used_memory + difference <= self._max_memory:
+                self._apps[name] = new_size
+                self._used_memory += difference
+                print(f"{name} оновлено")
+            else:
+                print("Недостатньо пам’яті для оновлення")
         else:
-            return 0
+            print("Такого додатку немає")
 
-    def heal_ally(self, ally):
-        heal_hp = 3 + self._level + 3 * self._intelligence
-        ally.heal(heal_hp)
+    # 🔹 Запустити додаток
+    def run_app(self, name):
+        if not self._is_on:
+            print("Телефон вимкнено")
+            return
+
+        if name in self._apps:
+            print(f"Запуск {name}...")
+        else:
+            print("Додаток не встановлено")
