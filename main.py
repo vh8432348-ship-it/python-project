@@ -1,3 +1,5 @@
+import random
+
 # Завдання 1
 
 
@@ -49,7 +51,7 @@ class Phone:
         self._max_memory = max_memory
         self._used_memory = 0
         self._is_on = False
-        self._apps = {}  # {name: size}
+        self._apps = {}
 
     def show_memory_info(self):
         print(f"Максимальна пам'ять: {self._max_memory}")
@@ -95,7 +97,6 @@ class Phone:
         else:
             print("Такого додатку немає")
 
-    # 🔹 Запустити додаток
     def run_app(self, name):
         if not self._is_on:
             print("Телефон вимкнено")
@@ -105,3 +106,105 @@ class Phone:
             print(f"Запуск {name}...")
         else:
             print("Додаток не встановлено")
+
+
+# Завдання 3
+
+
+class Car:
+    def __init__(self, brand, fuel, consumption):
+        self._brand = brand
+        self._mileage = 0
+        self._fuel = fuel
+        self._consumption = consumption  # л/км
+        self._is_ok = True
+
+    def drive(self, distance):
+        if not self._is_ok:
+            print("Авто зламане")
+            return
+
+        needed_fuel = distance * self._consumption
+
+        if needed_fuel > self._fuel:
+            print("Недостатньо пального")
+            return
+
+        self._fuel -= needed_fuel
+        self._mileage += distance
+
+        if random.random() < 0.4:
+            self._is_ok = False
+            print("Авто зламалось під час поїздки!")
+        else:
+            print("Поїздка успішна")
+
+    def repair(self):
+        self._is_ok = True
+        print("Авто відремонтовано")
+
+    def refuel(self, fuel):
+        self._fuel += fuel
+
+
+# Завдання 4
+
+
+class Student:
+    def __init__(self, name):
+        self._name = name
+        self._subjects = {}
+
+    def add_subject(self, subject):
+        self._subjects[subject] = []
+
+    def remove_subject(self, subject):
+        if subject in self._subjects:
+            del self._subjects[subject]
+
+    def study(self, subject, grade):
+        if subject in self._subjects:
+            self._subjects[subject].append(grade)
+
+    def average(self, subject):
+        if subject in self._subjects and self._subjects[subject]:
+            return sum(self._subjects[subject]) / len(self._subjects[subject])
+        return 0
+
+    def show_info(self):
+        print(f"Студент: {self._name}")
+        for subject, grades in self._subjects.items():
+            avg = sum(grades) / len(grades) if grades else 0
+            print(f"{subject}: {avg}")
+
+
+# Завдання 5
+
+
+class Shop:
+    def __init__(self, name):
+        self._name = name
+        self._profit = 0
+        self._stock = {}
+        self._prices = {}
+
+    def show_info(self):
+        print(f"Магазин: {self._name}")
+        print("Товари:", self._stock)
+
+    def add_product(self, name, quantity, price):
+        self._stock[name] = self._stock.get(name, 0) + quantity
+        self._prices[name] = price
+
+    def order(self, name, quantity):
+        if name not in self._stock:
+            print("Нема товару")
+            return
+
+        if self._stock[name] < quantity:
+            print("Недостатньо товару")
+            return
+
+        self._stock[name] -= quantity
+        self._profit += self._prices[name] * quantity
+        print("Замовлення оформлено")
