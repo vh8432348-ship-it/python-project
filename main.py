@@ -110,3 +110,50 @@ class CleaningRobot(Robot):
 
         self._battery_level -= energy
         self._status = RobotStatus.WORKING
+
+
+# Завдання 3
+
+
+class AlertLevel(Enum):
+    low = "low"
+    middle = "middle"
+    high = "high"
+
+
+class SecurityRobot(Robot):
+    def __init__(self, name, battery_level=100):
+        super().__init__(name, battery_level)
+
+        self._min_speed = 5
+        self._alert_level = AlertLevel.low
+        self._dangerous_items = ["gun", "knife", "bat"]
+
+    def info(self):
+        super().info()
+        print(f"Min speed: {self._min_speed}")
+        print(f"Alert level: {self._alert_level.value}")
+        print(f"Dangerous items: {self._dangerous_items}")
+
+    def turn_off(self):
+        self._alert_level = AlertLevel.low
+        super().turn_off()
+
+    def add_dangerous_item(self, item):
+        if item not in self._dangerous_items:
+            self._dangerous_items.append(item)
+
+    def remove_dangerous_item(self, item):
+        if item in self._dangerous_items:
+            self._dangerous_items.remove(item)
+
+    def detect(self, speed, item):
+        if speed < self._min_speed:
+            return
+
+        if speed >= self._min_speed:
+            if self._alert_level != AlertLevel.high:
+                self._alert_level = AlertLevel.middle
+
+        if item in self._dangerous_items:
+            self._alert_level = AlertLevel.high
