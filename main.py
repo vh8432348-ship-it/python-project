@@ -140,3 +140,21 @@ class Cart:
 
         except FileNotFoundError:
             print("Файл не знайдено")
+
+
+# Завдання 3
+
+with open("settings.json", "r", encoding="utf-8") as file:
+    settings = json.load(file)
+
+size = settings.get("size")
+background_color = settings.get("background_color")
+button_color = settings.get("button_color")
+button_position = settings.get("button_position")
+instruction = settings.get("instruction")
+
+print(size)
+print(background_color)
+print(button_color)
+print(button_position)
+print(instruction)
