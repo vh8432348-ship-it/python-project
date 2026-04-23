@@ -13,9 +13,10 @@ def load_users():
         return {}
 
 
+# Змінив save_users
 def save_users(users):
-    with open(FILE_NAME, "w", encoding="utf-8") as file:
-        json.dump(users, file, indent=4)
+    with open("users.json", "w", encoding="utf-8") as file:
+        json.dump(users, file, indent=4, ensure_ascii=False)
 
 
 def add_user(users):
@@ -94,3 +95,48 @@ def menu():
 
 
 menu()
+
+# Завдання 2
+
+
+class Cart:
+    def __init__(self, user):
+        self._user = user
+        self._items = []
+        self._total = 0
+
+    def add(self, item, price):
+        self._items.append({"item": item, "price": price})
+        self._total += price
+
+    def delete(self, item, price):
+        for i in self._items:
+            if i["item"] == item and i["price"] == price:
+                self._items.remove(i)
+                self._total -= price
+                break
+
+    def info(self):
+        print(f"User: {self._user}")
+        print("Items:")
+        for i in self._items:
+            print(f"- {i['item']} : {i['price']}")
+        print(f"Total: {self._total}")
+
+    def save(self, filename="cart.json"):
+        data = {"user": self._user, "items": self._items, "total": self._total}
+
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+
+    def load(self, filename="cart.json"):
+        try:
+            with open(filename, "r", encoding="utf-8") as file:
+                data = json.load(file)
+
+                self._user = data.get("user")
+                self._items = data.get("items", [])
+                self._total = data.get("total", 0)
+
+        except FileNotFoundError:
+            print("Файл не знайдено")
