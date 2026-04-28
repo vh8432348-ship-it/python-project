@@ -1,5 +1,6 @@
 import json
 import pickle
+from typing import List, Dict
 
 
 def add_product(products):
@@ -93,3 +94,105 @@ def menu():
 
 
 menu()
+
+# Завдання 2
+
+
+class Student:
+    def __init__(self, name: str, specialization: str) -> None:
+        self._name: str = name
+        self._specialization: str = specialization
+        self._grades: List[int] = []
+
+    def add_grade(self, grade: int) -> None:
+        self._grades.append(grade)
+
+    def average_grade(self) -> float:
+        if not self._grades:
+            return 0.0
+        return sum(self._grades) / len(self._grades)
+
+    def show_info(self) -> None:
+        print(f"Ім'я: {self._name}")
+        print(f"Спеціалізація: {self._specialization}")
+        print(f"Середня оцінка: {self.average_grade():.2f}")
+        print("-" * 30)
+
+
+def save_students_json(students: List[Dict], filename: str = "students.json") -> None:
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(students, file, ensure_ascii=False, indent=4)
+
+
+def load_students_json(filename: str = "students.json") -> List[Dict]:
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+
+def save_students_pickle(students: List[Dict], filename: str = "students.pkl") -> None:
+    with open(filename, "wb") as file:
+        pickle.dump(students, file)
+
+
+def load_students_pickle(filename: str = "students.pkl") -> List[Dict]:
+    try:
+        with open(filename, "rb") as file:
+            return pickle.load(file)
+    except FileNotFoundError:
+        return []
+
+
+students: List[Dict] = []
+
+s1 = Student("Іван", "Програмування")
+s1.add_grade(95)
+s1.add_grade(88)
+
+students.append(
+    {"name": s1._name, "specialization": s1._specialization, "grades": s1._grades}
+)
+
+s2 = Student("Марія", "Дизайн")
+s2.add_grade(90)
+s2.add_grade(85)
+
+students.append(
+    {"name": s2._name, "specialization": s2._specialization, "grades": s2._grades}
+)
+
+s3 = Student("Олег", "Кібербезпека")
+s3.add_grade(100)
+s3.add_grade(92)
+
+students.append(
+    {"name": s3._name, "specialization": s3._specialization, "grades": s3._grades}
+)
+
+
+save_students_json(students)
+save_students_pickle(students)
+
+
+json_students = load_students_json()
+pickle_students = load_students_pickle()
+
+
+print("=== JSON ===")
+for student in json_students:
+    avg = sum(student["grades"]) / len(student["grades"])
+    print(f"Ім'я: {student['name']}")
+    print(f"Спеціалізація: {student['specialization']}")
+    print(f"Середня оцінка: {avg:.2f}")
+    print("-" * 30)
+
+
+print("=== Pickle ===")
+for student in pickle_students:
+    avg = sum(student["grades"]) / len(student["grades"])
+    print(f"Ім'я: {student['name']}")
+    print(f"Спеціалізація: {student['specialization']}")
+    print(f"Середня оцінка: {avg:.2f}")
+    print("-" * 30)
