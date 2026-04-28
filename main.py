@@ -196,3 +196,60 @@ for student in pickle_students:
     print(f"Спеціалізація: {student['specialization']}")
     print(f"Середня оцінка: {avg:.2f}")
     print("-" * 30)
+
+# Завдання 3
+
+
+def add_friendship(friends: Dict[str, List[str]], person1: str, person2: str) -> None:
+    if person1 not in friends:
+        friends[person1] = []
+
+    if person2 not in friends:
+        friends[person2] = []
+
+    if person2 not in friends[person1]:
+        friends[person1].append(person2)
+
+    if person1 not in friends[person2]:
+        friends[person2].append(person1)
+
+
+def save_friends_json(
+    friends: Dict[str, List[str]], filename: str = "friends.json"
+) -> None:
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(friends, file, ensure_ascii=False, indent=4)
+
+
+def load_friends_json(filename: str = "friends.json") -> Dict[str, List[str]]:
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
+
+
+def show_friends(friends: Dict[str, List[str]]) -> None:
+    print("Список друзів:")
+    for person, friends_list in friends.items():
+        print(f"{person}: {', '.join(friends_list)}")
+
+
+friends: Dict[str, List[str]] = {}
+
+count: int = int(input("Скільки пар друзів ви хочете додати?: "))
+
+for _ in range(count):
+    person1: str = input("Введіть перше ім'я: ")
+    person2: str = input("Введіть друге ім'я: ")
+
+    add_friendship(friends, person1, person2)
+
+
+save_friends_json(friends)
+
+
+loaded_friends = load_friends_json()
+
+
+show_friends(loaded_friends)
