@@ -1,56 +1,65 @@
 # Завдання 1
 
 
-class CreditCardPayment:
-    def __init__(self, currency):
-        self._currency = currency
+class Recipe:
+    def __init__(self, name, ingredients, text, time):
+        self.__name = name
+        self.__ingredients = ingredients
+        self.__text = text
+        self.__time = time
 
-    def pay(self, amount):
-        print(f"Оплата карткою {amount}{self._currency}")
+    def get_time(self):
+        return self.__time
 
+    def get_name(self):
+        return self.__name
 
-class PayPalPayment:
-    def __init__(self, currency):
-        self._currency = currency
+    def __str__(self):
+        return self.__name
 
-    def pay(self, amount):
-        print(f"Оплата PayPal {amount}{self._currency}")
+    def __contains__(self, item):
+        return item in self.__ingredients
 
+    def __gt__(self, other):
+        return self.__time > other.__time
 
-class CryptoPayment:
-    def __init__(self, currency):
-        self._currency = currency
-
-    def pay(self, amount):
-        print(f"Оплата криптогаманцем {amount}{self._currency}")
-
-
-def create_payment():
-    payment_type = input("Введіть тип платежу (card / paypal / crypto): ").lower()
-    currency = input("Введіть валюту: ")
-
-    if payment_type == "card":
-        return CreditCardPayment(currency)
-
-    elif payment_type == "paypal":
-        return PayPalPayment(currency)
-
-    elif payment_type == "crypto":
-        return CryptoPayment(currency)
-
-    else:
-        print("Невідомий тип!")
-        return None
+    def display_info(self):
+        print(f"Назва: {self.__name}")
+        print(f"Інгредієнти: {', '.join(self.__ingredients)}")
+        print(f"Рецепт: {self.__text}")
+        print(f"Час приготування: {self.__time} хв")
+        print("-" * 40)
 
 
-payments = []
+recipe1 = Recipe(
+    "Піца",
+    ["борошно", "вода", "дріжджі", "томат", "сир"],
+    "Готуємо тісто, додаємо інгредієнти та запікаємо",
+    30,
+)
 
-for _ in range(3):
-    p = create_payment()
-    if p:
-        payments.append(p)
+recipe2 = Recipe(
+    "Салат",
+    ["томат", "огірок", "зелень", "олія"],
+    "Нарізаємо овочі, додаємо зелень та поливаємо олією",
+    10,
+)
+
+recipe3 = Recipe(
+    "Суп",
+    ["вода", "картопля", "морква", "м'ясо"],
+    "Варимо всі інгредієнти до готовності",
+    45,
+)
+
+recipes = [recipe1, recipe2, recipe3]
 
 
-for p in payments:
-    amount = float(input("Введіть суму: "))
-    p.pay(amount)
+print("Рецепти, які містять томат:")
+for recipe in recipes:
+    if "томат" in recipe:
+        print(recipe)
+
+print("\nРецепт з найменшим часом приготування:")
+fastest_recipe = min(recipes, key=lambda r: r.get_time())
+fastest_recipe.display_info()
