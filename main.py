@@ -113,3 +113,34 @@ thread_odd.join()
 
 print(f"Кількість парних чисел: {result0['even_count']}")
 print(f"Кількість непарних чисел: {result0['odd_count']}")
+
+# Завдання 4
+
+
+def search_word_in_file(file_path: str, search_word: str, result: dict[str, int]):
+    with open(file_path, "r", encoding="utf-8") as file:
+        text = file.read()
+
+    count = text.lower().split().count(search_word.lower())
+
+    result["count"] = count
+
+
+file_path = input("Введіть шлях до файлу: ")
+search_word = input("Введіть слово для пошуку: ")
+
+result1: dict[str, int] = {}
+
+search_thread = threading.Thread(
+    target=search_word_in_file,
+    args=(file_path, search_word, result1),
+)
+
+search_thread.start()
+
+search_thread.join()
+
+if result["count"] > 0:
+    print(f"Слово '{search_word}' знайдено {result1['count']} раз(ів).")
+else:
+    print(f"Слово '{search_word}' не знайдено.")
