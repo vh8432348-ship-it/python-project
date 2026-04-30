@@ -4,21 +4,33 @@ import threading
 # Завдання 1
 
 
-def find_max(numbers, res_max):
-    res_max["max"] = max(numbers)
+numbers = []
+count = int(input("Enter count of numbers: "))
+
+for _ in range(count):
+    number = int(input("Enter number: "))
+    numbers.append(number)
 
 
-def find_min(numbers, res_min):
-    res_min["min"] = min(numbers)
+def find_max(numbers: list[int], result: dict[str, int]):
+    result["max"] = max(numbers)
 
 
-numbers = list(map(int, input("Введіть числа через пробіл: ").split()))
+def find_min(numbers: list[int], result: dict[str, int]):
+    result["min"] = min(numbers)
 
-res_max: dict[str, int] = {}
-res_min: dict[str, int] = {}
 
-thread_max = threading.Thread(target=find_max, args=(numbers, res_max))
-thread_min = threading.Thread(target=find_min, args=(numbers, res_min))
+result: dict[str, int] = {}
+
+thread_max = threading.Thread(
+    target=find_max,
+    args=(numbers, result),
+)
+
+thread_min = threading.Thread(
+    target=find_min,
+    args=(numbers, result),
+)
 
 thread_max.start()
 thread_min.start()
@@ -26,8 +38,8 @@ thread_min.start()
 thread_max.join()
 thread_min.join()
 
-print(f"Максимум у списку: {res_max['max']}")
-print(f"Мінімум у списку: {res_min['min']}")
+print(f"Max = {result['max']}")
+print(f"Min = {result['min']}")
 
 # Завдання 2
 
