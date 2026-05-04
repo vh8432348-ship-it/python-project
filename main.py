@@ -64,7 +64,7 @@ class Dog(Pet):
 
     def fetch_ball(self):
         if self.get_satiety() > 10:
-            print(f"{self.get_name()} приніс м’яч 🎾")
+            print(f"{self.get_name()} приніс м’яч ")
             self.set_energy(self.get_energy() - 5)
 
 
