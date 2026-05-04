@@ -1,146 +1,83 @@
-import threading
-
-
 # Завдання 1
 
 
-numbers = []
-count = int(input("Enter count of numbers: "))
+class Pet:
+    def __init__(self, name: str, satiety: int = 50, energy: int = 50):
+        self.__name = name
+        self.__satiety = satiety
+        self.__energy = energy
 
-for _ in range(count):
-    number = int(input("Enter number: "))
-    numbers.append(number)
+    def get_name(self):
+        return self.__name
 
+    def get_satiety(self):
+        return self.__satiety
 
-def find_max(numbers: list[int], result: dict[str, int]):
-    result["max"] = max(numbers)
+    def get_energy(self):
+        return self.__energy
 
+    def set_satiety(self, value):
+        self.__satiety = max(0, min(100, value))
 
-def find_min(numbers: list[int], result: dict[str, int]):
-    result["min"] = min(numbers)
+    def set_energy(self, value):
+        self.__energy = max(0, min(100, value))
 
+    def sleep(self):
+        self.__energy = 100
 
-result: dict[str, int] = {}
+    def eat(self, food_amount: int):
+        self.set_satiety(self.__satiety + food_amount)
 
-thread_max = threading.Thread(
-    target=find_max,
-    args=(numbers, result),
-)
+    def play(self, activity_level: int):
+        pass
 
-thread_min = threading.Thread(
-    target=find_min,
-    args=(numbers, result),
-)
-
-thread_max.start()
-thread_min.start()
-
-thread_max.join()
-thread_min.join()
-
-print(f"Max = {result['max']}")
-print(f"Min = {result['min']}")
-
-# Завдання 2
+    def make_sound(self):
+        pass
 
 
-def find_sum(numbers):
-    total = sum(numbers)
-    print(f"Сума елементів списку: {total}")
+class Cat(Pet):
+    def play(self, activity_level: int):
+        if self.get_satiety() > 60:
+            self.set_energy(self.get_energy() - 2 * activity_level)
+            self.set_satiety(self.get_satiety() - activity_level)
+
+    def make_sound(self):
+        print("Мяу")
+
+    def catch_mouse(self):
+        if self.get_energy() > 30:
+            if self.get_satiety() > 40:
+                print(f"{self.get_name()} грається з мишею 🐭")
+            else:
+                print(f"{self.get_name()} з’їв мишу 🐭")
+                self.set_satiety(self.get_satiety() + 20)
 
 
-def find_average(numbers):
-    average = sum(numbers) / len(numbers)
-    print(f"Середнє арифметичне: {average}")
+class Dog(Pet):
+    def play(self, activity_level: int):
+        if self.get_satiety() > 15:
+            self.set_energy(self.get_energy() - activity_level // 2)
+            self.set_satiety(self.get_satiety() - activity_level // 2)
+
+    def make_sound(self):
+        print("Гав")
+
+    def fetch_ball(self):
+        if self.get_satiety() > 10:
+            print(f"{self.get_name()} приніс м’яч 🎾")
+            self.set_energy(self.get_energy() - 5)
 
 
-numbers = list(map(int, input("Введіть числа через пробіл: ").split()))
+cat = Cat("Барсик")
+dog = Dog("Рекс")
 
-thread_sum = threading.Thread(target=find_sum, args=(numbers,))
-thread_average = threading.Thread(target=find_average, args=(numbers,))
+cat.play(10)
+cat.catch_mouse()
+cat.make_sound()
 
-thread_sum.start()
-thread_average.start()
+dog.play(10)
+dog.fetch_ball()
+dog.make_sound()
 
-thread_sum.join()
-thread_average.join()
-
-# Завдання 3
-
-
-def write_even_numbers(numbers: list[int], result: dict[str, int]):
-    even_numbers = [num for num in numbers if num % 2 == 0]
-
-    with open("even_numbers.txt", "w", encoding="utf-8") as file:
-        for num in even_numbers:
-            file.write(f"{num}\n")
-
-    result["even_count"] = len(even_numbers)
-
-
-def write_odd_numbers(numbers: list[int], result: dict[str, int]):
-    odd_numbers = [num for num in numbers if num % 2 != 0]
-
-    with open("odd_numbers.txt", "w", encoding="utf-8") as file:
-        for num in odd_numbers:
-            file.write(f"{num}\n")
-
-    result["odd_count"] = len(odd_numbers)
-
-
-file_path = input("Введіть шлях до файлу з числами: ")
-
-with open(file_path, "r", encoding="utf-8") as file:
-    numbers = list(map(int, file.read().split()))
-
-result0: dict[str, int] = {}
-
-thread_even = threading.Thread(
-    target=write_even_numbers,
-    args=(numbers, result0),
-)
-
-thread_odd = threading.Thread(
-    target=write_odd_numbers,
-    args=(numbers, result0),
-)
-
-thread_even.start()
-thread_odd.start()
-
-thread_even.join()
-thread_odd.join()
-
-print(f"Кількість парних чисел: {result0['even_count']}")
-print(f"Кількість непарних чисел: {result0['odd_count']}")
-
-# Завдання 4
-
-
-def search_word_in_file(file_path: str, search_word: str, result: dict[str, int]):
-    with open(file_path, "r", encoding="utf-8") as file:
-        text = file.read()
-
-    count = text.lower().split().count(search_word.lower())
-
-    result["count"] = count
-
-
-file_path = input("Введіть шлях до файлу: ")
-search_word = input("Введіть слово для пошуку: ")
-
-result1: dict[str, int] = {}
-
-search_thread = threading.Thread(
-    target=search_word_in_file,
-    args=(file_path, search_word, result1),
-)
-
-search_thread.start()
-
-search_thread.join()
-
-if result["count"] > 0:
-    print(f"Слово '{search_word}' знайдено {result1['count']} раз(ів).")
-else:
-    print(f"Слово '{search_word}' не знайдено.")
+print(f"{cat.get_name()}: ситість={cat.get_satiety()}, енергія={cat.get_energy()}")
+print(f"{dog.get_name()}: ситість={dog.get_satiety()}, енергія={dog.get_energy()}")
