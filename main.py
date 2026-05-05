@@ -12,7 +12,6 @@ from fastapi import FastAPI
 #     return {"message": "Привіт з сервера!"}
 # Завдання 2
 
-
 app = FastAPI()
 
 
