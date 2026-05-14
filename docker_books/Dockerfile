@@ -1,4 +1,11 @@
-FROM ubuntu:latest
-LABEL authors="User"
+FROM python:3.11-slim
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY ./requirements.txt ./requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY ./ ./
+
+CMD ["python3", "-u", "application.py"]
