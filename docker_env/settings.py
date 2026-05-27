@@ -1,16 +1,8 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
-
-class Settings(BaseSettings):
-    app_name: str = "itstep-app"
-    filename: str = "data.json"
-
-    login: str
-    password: str
-
-    model_config = SettingsConfigDict(
-        env_file="../docker_books/.env", env_file_encoding="utf-8"
-    )
+class Settings:
+    app_name = "Movies Server"
+    filename = "movies.json"
+    login = "admin"
+    password = "1234"
 
 
 settings = Settings()
