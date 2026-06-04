@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     max_len: int = 10
     delay: int = 2
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file="../.env", env_file_encoding="utf-8")
 
 
 settings = Settings()
