@@ -1,74 +1,113 @@
-127.0.0.1:6379> SET name "John Doe"
+127.0.0.1:6379> SET username "Alex"
 OK
-127.0.0.1:6379> GET name
-"John Doe"
-127.0.0.1:6379> RPUSH fruits apple banana orange
-(integer) 3
-127.0.0.1:6379> LRANGE fruits 0 -1
-1) "apple"
-2) "banana"
-3) "orange"
-127.0.0.1:6379> HMSET user:1 name "Alice" age 25
-OK
-127.0.0.1:6379> HGETALL user:1
-1) "name"
-2) "Alice"
-3) "age"
-4) "25"
-127.0.0.1:6379> SADD tags red green blue
+127.0.0.1:6379> GET username
+"Alex"
+127.0.0.1:6379> LPUSH todo_list "Поготувати обід"
+(integer) 1
+127.0.0.1:6379> LPUSH todo_list "Вивчити Redis"
+(integer) 2
+127.0.0.1:6379> LRANGE todo_list 0 -1
+1) "\xd0\x92\xd0\xb8\xd0\xb2\xd1\x87\xd0\xb8\xd1\x82\xd0\xb8 Redis"
+2) "\xd0\x9f\xd0\xbe\xd0\xb3\xd0\xbe\xd1\x82\xd1\x83\xd0\xb2\xd0\xb0\xd1\x82\xd0\xb8 \xd0\xbe\xd0\xb1\xd1\x96\xd0\xb4"
+127.0.0.1:6379> HSET user_data age 20 country Ukraine
+(integer) 2
+127.0.0.1:6379> HGETALL user_data
+1) "age"
+2) "20"
+3) "country"
+4) "Ukraine"
+127.0.0.1:6379> SADD tags programming redis tutorial
 (integer) 3
 127.0.0.1:6379> SMEMBERS tags
-1) "red"
-2) "green"
-3) "blue"
-127.0.0.1:6379> INCR counter
-(integer) 1
-127.0.0.1:6379> GET counter
-"1"
-127.0.0.1:6379> DEL name
-(integer) 1
-127.0.0.1:6379> EXISTS name
-(integer) 0
-127.0.0.1:6379> SETEX message 60 "Hello, Redis!"
+1) "programming"
+2) "redis"
+3) "tutorial"
+127.0.0.1:6379> SET page_views 0
 OK
-127.0.0.1:6379> GEOADD geo_locations 30.5234 50.4501 Kyiv
+127.0.0.1:6379> INCRBY page_views 5
+(integer) 5
+127.0.0.1:6379> GET page_views
+"5"
+127.0.0.1:6379> SET session_token "abc123"
+OK
+127.0.0.1:6379> EXPIRE session_token 120
 (integer) 1
-127.0.0.1:6379> GEOADD geo_locations 30.7233 46.4825 Odesa
+127.0.0.1:6379> TTL session_token
+(integer) 115
+127.0.0.1:6379> DEL username
 (integer) 1
-127.0.0.1:6379> GEOADD geo_locations 30.7326 46.4775 Center
-(integer) 1
-127.0.0.1:6379> HSET students Ivan 85
-(integer) 1
-127.0.0.1:6379> HSET students Anna 92
-(integer) 1
-127.0.0.1:6379> HSET students Oleg 78
-(integer) 1
-127.0.0.1:6379> HGETALL students
-1) "Ivan"
-2) "85"
-3) "Anna"
-4) "92"
-5) "Oleg"
-6) "78"
-127.0.0.1:6379> HSET students Ivan 95
+127.0.0.1:6379> GET username
+(nil)
+127.0.0.1:6379> SET user:1:name "Alex"
+OK
+127.0.0.1:6379> KEYS user:*
+1) "user:1:name"
+127.0.0.1:6379> SETBIT online_status 0 1
 (integer) 0
-127.0.0.1:6379> HGETALL students
-1) "Ivan"
-2) "95"
-3) "Anna"
-4) "92"
-5) "Oleg"
-6) "78"
+127.0.0.1:6379> GETBIT online_status 0
+(integer) 1
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379(TX)> SET balance 1000
+QUEUED
+127.0.0.1:6379(TX)> GET balance
+QUEUED
+127.0.0.1:6379(TX)> EXEC
+1) OK
+2) "1000"
+127.0.0.1:6379> SADD cache:popular_articles 1 2 3
+(integer) 3
+127.0.0.1:6379> SMEMBERS cache:popular_articles
+1) "1"
+2) "2"
+3) "3"
+127.0.0.1:6379> SADD set1 a b c
+(integer) 3
+127.0.0.1:6379> SADD set2 b c d
+(integer) 3
+127.0.0.1:6379> SUNION set1 set2
+1) "d"
+2) "c"
+3) "a"
+4) "b"
+127.0.0.1:6379> SINTER set1 set2
+1) "b"
+2) "c"
+127.0.0.1:6379> SUBSCRIBE messages
+1) "subscribe"
+2) "messages"
+3) (integer) 1
+1) "message"
+2) "messages"
+3) "Hello"
+1) "message"
+2) "messages"
+3) "Hello"
+127.0.0.1:6379> GEOADD locations 30.5 50.4 Kyiv 24.0 49.8 Lviv
+(integer) 2
+127.0.0.1:6379> RPUSH tasks "Task 1" "Task 2" "Task 3"
+(integer) 3
+127.0.0.1:6379> LRANGE tasks 0 -1
+1) "Task 1"
+2) "Task 2"
+3) "Task 3"
+127.0.0.1:6379> RPUSH tasks "Task 4"
+(integer) 4
+127.0.0.1:6379> LPOP tasks
+"Task 1"
+127.0.0.1:6379> LRANGE tasks 0 -1
+1) "Task 2"
+2) "Task 3"
+3) "Task 4"
 127.0.0.1:6379> PFADD unique_users 1 2 3 4 5
 (integer) 1
 127.0.0.1:6379> PFCOUNT unique_users
 (integer) 5
-127.0.0.1:6379> MULTI
-OK
-127.0.0.1:6379(TX)> LPUSH mylist one
-QUEUED
-127.0.0.1:6379(TX)> HSET myhash field value
-QUEUED
-127.0.0.1:6379(TX)> EXEC
-1) (integer) 1
-2) (integer) 1
+127.0.0.1:6379> LPUSH message_queue "Hello"
+(integer) 1
+127.0.0.1:6379> LPUSH message_queue "World"
+(integer) 2
+127.0.0.1:6379> LRANGE message_queue 0 -1
+1) "World"
+2) "Hello"
+127.0.0.1:6379>

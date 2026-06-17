@@ -3,8 +3,8 @@
 #
 # b = int(input("Введіть друге число"))
 # result = 0
-# for a in range(a,b):
-#     result += a
+# for i in range(a,b):
+#     result += i
 # print(f"Сума діапазону чисел: {result}")
 #
 # # Завдання 2
